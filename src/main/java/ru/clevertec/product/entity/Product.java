@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Data
-@Builder
+@Builder(setterPrefix = "set")
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldNameConstants
