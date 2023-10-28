@@ -3,7 +3,7 @@ package ru.clevertec.product.repository.constant;
 import java.math.BigDecimal;
 import java.util.UUID;
 
-public interface Constants {
+public interface RepoConstants {
     UUID UUID = java.util.UUID.fromString("b9a6d63a-bd10-4388-8912-c4ab3411c188");
     String APPLE = "Apple";
     String GREEN = "Green";

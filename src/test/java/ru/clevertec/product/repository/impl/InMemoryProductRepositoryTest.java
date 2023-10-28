@@ -12,7 +12,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.junit.jupiter.MockitoExtension;
 import ru.clevertec.product.entity.Product;
-import ru.clevertec.product.repository.constant.Constants;
+import ru.clevertec.product.repository.constant.RepoConstants;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -40,14 +40,14 @@ class InMemoryProductRepositoryTest {
     void checkFindByIdShouldReturnEquals() {
         // given
         Product expected = Product.builder()
-                .setUuid(Constants.UUID)
-                .setName(Constants.APPLE)
-                .setDescription(Constants.GREEN)
-                .setPrice(Constants.APPLE_PRICE_1_05)
+                .setUuid(RepoConstants.UUID)
+                .setName(RepoConstants.APPLE)
+                .setDescription(RepoConstants.GREEN)
+                .setPrice(RepoConstants.APPLE_PRICE_1_05)
                 .setCreated(LocalDateTime.MIN)
                 .build();
         // when
-        Product actual = repository.findById(Constants.UUID).orElseThrow();
+        Product actual = repository.findById(RepoConstants.UUID).orElseThrow();
         // then
         Assertions.assertEquals(expected, actual);
     }
@@ -65,8 +65,8 @@ class InMemoryProductRepositoryTest {
         // given
         Product toSave = Product.builder()
                 .setName("Pear")
-                .setDescription(Constants.GREEN)
-                .setPrice(Constants.PEAR_PRICE_1_11)
+                .setDescription(RepoConstants.GREEN)
+                .setPrice(RepoConstants.PEAR_PRICE_1_11)
                 .setCreated(LocalDateTime.MIN)
                 .build();
         // when
@@ -78,8 +78,8 @@ class InMemoryProductRepositoryTest {
     @Test
     void delete() {
         // when
-        repository.delete(Constants.UUID);
+        repository.delete(RepoConstants.UUID);
         // then
-        assertThat(repository.findById(Constants.UUID)).isEmpty();
+        assertThat(repository.findById(RepoConstants.UUID)).isEmpty();
     }
 }
