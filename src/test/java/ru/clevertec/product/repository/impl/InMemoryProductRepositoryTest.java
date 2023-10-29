@@ -4,12 +4,13 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Stream;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.ValueSource;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.junit.jupiter.MockitoExtension;
 import ru.clevertec.product.entity.Product;
 import ru.clevertec.product.repository.constant.RepoConstants;
@@ -26,14 +27,18 @@ class InMemoryProductRepositoryTest {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = {"1", "2"})
-    void checkFindByIdShouldReturnEmpty(String string) {
-        // given
-        UUID uuid = UUID.fromString(string);
+    @MethodSource("provideUuids")
+    void checkFindByIdShouldReturnEmpty(UUID uuid) {
         // when
         Optional<Product> actual = repository.findById(uuid);
         // then
         assertThat(actual).isEmpty();
+    }
+
+    private static Stream<UUID> provideUuids() {
+        return Stream.of(
+                UUID.fromString("80e374af-e32e-41ad-9598-b62b9b454c96"),
+                UUID.fromString("80e374af-e32e-41ad-9598-b62b9b454c97"));
     }
 
     @Test

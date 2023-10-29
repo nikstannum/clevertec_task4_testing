@@ -42,7 +42,9 @@ class ProductServiceImplTest {
     private ProductServiceImpl service;
 
     private static Stream<UUID> provideUuids() {
-        return Stream.of(UUID.fromString("1"), UUID.fromString("2"));
+        return Stream.of(
+                UUID.fromString("80e374af-e32e-41ad-9598-b62b9b454c96"),
+                UUID.fromString("80e374af-e32e-41ad-9598-b62b9b454c97"));
     }
 
     @ParameterizedTest
@@ -86,9 +88,9 @@ class ProductServiceImplTest {
         ProductDto dtoToSave = ProductDtoTestData.builder().build().buildProductDto();
         Product productToSave = ProductTestData.builder().withUuid(null).build().buildProduct();
         doReturn(productToSave).when(mapper).toProduct(dtoToSave);
+
         Product savedProduct = ProductTestData.builder().build().buildProduct();
-        InfoProductDto savedDto = ProductDtoTestData.builder().build().buildInfoProductDto();
-        doReturn(savedDto).when(mapper).toInfoProductDto(savedProduct);
+        doReturn(savedProduct).when(repository).save(productToSave);
         // when
         UUID actual = service.create(dtoToSave);
         // then

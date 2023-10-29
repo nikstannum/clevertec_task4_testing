@@ -9,16 +9,27 @@ public class ProductMapperImpl implements ProductMapper {
 
     @Override
     public Product toProduct(ProductDto productDto) {
-        return null;
+        return Product.builder()
+                .setName(productDto.name())
+                .setDescription(productDto.description())
+                .setPrice(productDto.price())
+                .build();
     }
 
     @Override
     public InfoProductDto toInfoProductDto(Product product) {
-        return null;
+        return new InfoProductDto(
+                product.getUuid(),
+                product.getName(),
+                product.getDescription(),
+                product.getPrice());
     }
 
     @Override
     public Product merge(Product product, ProductDto productDto) {
-        return null;
+        product.setName(productDto.name());
+        product.setDescription(productDto.description());
+        product.setPrice(productDto.price());
+        return product;
     }
 }
