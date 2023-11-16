@@ -13,17 +13,19 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.junit.jupiter.MockitoExtension;
 import ru.clevertec.product.entity.Product;
-import ru.clevertec.product.repository.constant.RepoConstants;
+import ru.clevertec.product.util.RepoConstants;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 @ExtendWith(MockitoExtension.class)
 class InMemoryProductRepositoryTest {
+
     private InMemoryProductRepository repository;
 
     @BeforeEach
     void setUp() {
         repository = new InMemoryProductRepository();
+        repository.init();
     }
 
     @ParameterizedTest
@@ -31,14 +33,15 @@ class InMemoryProductRepositoryTest {
     void checkFindByIdShouldReturnEmpty(UUID uuid) {
         // when
         Optional<Product> actual = repository.findById(uuid);
+
         // then
         assertThat(actual).isEmpty();
     }
 
     private static Stream<UUID> provideUuids() {
         return Stream.of(
-                UUID.fromString("80e374af-e32e-41ad-9598-b62b9b454c96"),
-                UUID.fromString("80e374af-e32e-41ad-9598-b62b9b454c97"));
+                UUID.fromString("80e374af-e32e-41ad-9598-b62b9b454c97"),
+                null);
     }
 
     @Test
@@ -51,8 +54,10 @@ class InMemoryProductRepositoryTest {
                 .setPrice(RepoConstants.APPLE_PRICE_1_05)
                 .setCreated(LocalDateTime.MIN)
                 .build();
+
         // when
         Product actual = repository.findById(RepoConstants.UUID).orElseThrow();
+
         // then
         Assertions.assertEquals(expected, actual);
     }
@@ -61,6 +66,7 @@ class InMemoryProductRepositoryTest {
     void checkFindAllShouldHasSize1() {
         // when
         List<Product> products = repository.findAll();
+
         // then
         assertThat(products).hasSize(1);
     }
@@ -74,8 +80,10 @@ class InMemoryProductRepositoryTest {
                 .setPrice(RepoConstants.PEAR_PRICE_1_11)
                 .setCreated(LocalDateTime.MIN)
                 .build();
+
         // when
         Product saved = repository.save(toSave);
+
         // then
         assertThat(saved.getUuid()).isNotNull();
     }
@@ -84,6 +92,7 @@ class InMemoryProductRepositoryTest {
     void delete() {
         // when
         repository.delete(RepoConstants.UUID);
+
         // then
         assertThat(repository.findById(RepoConstants.UUID)).isEmpty();
     }

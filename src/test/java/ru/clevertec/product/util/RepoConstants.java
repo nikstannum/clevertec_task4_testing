@@ -1,4 +1,4 @@
-package ru.clevertec.product.repository.constant;
+package ru.clevertec.product.util;
 
 import java.math.BigDecimal;
 import java.util.UUID;

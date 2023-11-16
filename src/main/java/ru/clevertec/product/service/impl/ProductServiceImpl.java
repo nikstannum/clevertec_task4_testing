@@ -1,5 +1,6 @@
 package ru.clevertec.product.service.impl;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
@@ -19,17 +20,22 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public InfoProductDto get(UUID uuid) {
-        return mapper.toInfoProductDto(productRepository.findById(uuid).orElseThrow(() -> new ProductNotFoundException(uuid)));
+        return productRepository.findById(uuid)
+                .map(mapper::toInfoProductDto)
+                .orElseThrow(() -> new ProductNotFoundException(uuid));
     }
 
     @Override
     public List<InfoProductDto> getAll() {
-        return productRepository.findAll().stream().map(mapper::toInfoProductDto).toList();
+        return productRepository.findAll().stream()
+                .map(mapper::toInfoProductDto)
+                .toList();
     }
 
     @Override
     public UUID create(ProductDto productDto) {
         Product product = mapper.toProduct(productDto);
+        product.setCreated(LocalDateTime.now());
         Product saved = productRepository.save(product);
         return saved.getUuid();
     }

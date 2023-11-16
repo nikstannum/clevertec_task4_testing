@@ -11,11 +11,11 @@ import ru.clevertec.product.entity.Product;
 import ru.clevertec.product.repository.ProductRepository;
 
 public class InMemoryProductRepository implements ProductRepository {
-    private final Map<UUID, Product> storage = init();
+    private Map<UUID, Product> storage;
 
     @Override
     public Optional<Product> findById(UUID uuid) {
-        return storage.containsKey(uuid) ? Optional.of(storage.get(uuid)) : Optional.empty();
+        return Optional.ofNullable(storage.get(uuid));
     }
 
     @Override
@@ -33,6 +33,7 @@ public class InMemoryProductRepository implements ProductRepository {
             product.setUuid(uuid);
         }
         storage.put(product.getUuid(), product);
+
         return product;
     }
 
@@ -41,8 +42,8 @@ public class InMemoryProductRepository implements ProductRepository {
         storage.remove(uuid);
     }
 
-    private Map<UUID, Product> init() {
-        Map<UUID, Product> map = new HashMap<>();
+    public void init() {
+        storage = new HashMap<>();
         UUID uuid = UUID.fromString("b9a6d63a-bd10-4388-8912-c4ab3411c188");
         Product product = Product.builder()
                 .setUuid(uuid)
@@ -51,7 +52,6 @@ public class InMemoryProductRepository implements ProductRepository {
                 .setPrice(BigDecimal.valueOf(1.05))
                 .setCreated(LocalDateTime.MIN)
                 .build();
-        map.put(uuid, product);
-        return map;
+        storage.put(uuid, product);
     }
 }

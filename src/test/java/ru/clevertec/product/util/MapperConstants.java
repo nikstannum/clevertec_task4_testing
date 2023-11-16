@@ -1,4 +1,4 @@
-package ru.clevertec.product.mapper.constants;
+package ru.clevertec.product.util;
 
 public interface MapperConstants {
     String FIELD_UUID = "uuid";
